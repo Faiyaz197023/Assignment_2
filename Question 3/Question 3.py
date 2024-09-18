@@ -1,12 +1,10 @@
-# Answer To Question - 1, 2 & 4
-
 import nltk
 from nltk.corpus import words
 
 nltk.download('words')
 english_words = set(words.words())
 
-file = open("Decrypted_text.txt","w")
+
 def decipher(text, s):
     deciphered_text = ""
 
@@ -41,7 +39,6 @@ def check_validity(text):
 def shift_value(text):
     best_shift_key = 0
     most_valid_words = 0
-    deciphered = ""
 
     for s in range(26):
         deciphered_text = decipher(text, s)
@@ -50,24 +47,34 @@ def shift_value(text):
         if valid_words > most_valid_words:
             best_shift_key = s
             most_valid_words = valid_words
-            deciphered = deciphered_text
 
-    return deciphered, best_shift_key
+    return best_shift_key
 
-#taking the shift key value
-ciphered_text = "VZ FRYSVFU VZCNGVRAG NAQ N YVGGYR VAFRPHER V ZNXR ZVFGNXRF V NZ BHGF BS PBAGEBY NAQ NG GVZRF UNEQ GB UNAQYR OHG VS LBH PNAG UNAQYR ZR NG ZL JBEFG GURA LBH FHER NF URYYQBAQ QRFRER ZR NG ZL ORFG ZNEVYLA ZBAEBR"
-
-deciphered_text, key = shift_value(ciphered_text)
 
 r = open("Encrypted Code.txt", 'r')
 encrypted_code = r.readlines()
+filtered_encrypted_code = []
+temp = ""
+
+for i in encrypted_code:
+    for char in i:
+        if 65 <= ord(char) <= 90:
+            temp += char
+
+        elif 97 <= ord(char) <= 122:
+            temp += char
+        else:
+            if temp:
+                filtered_encrypted_code.append(temp)
+                temp = ""
+
+filtered_encrypted_code = " ".join(filtered_encrypted_code)
+
+key = shift_value(filtered_encrypted_code)
+
 decrypted_code = ""
 
 for i in encrypted_code:
     decrypted_code += decipher(i, key)
 
 print(decrypted_code)
-file.write(decrypted_code)
-
-# Answer To Question - 3
-#In Corrected_Code-3C.py
